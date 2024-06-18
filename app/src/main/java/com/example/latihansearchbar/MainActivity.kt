@@ -1,7 +1,7 @@
 package com.example.latihansearchbar
 
 import android.os.Bundle
-import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -32,18 +32,13 @@ class MainActivity : AppCompatActivity() {
             bind.rvHeroes.adapter = heroAdapter
         }
 
-        val onBackPressedCallback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (bind.searchView.isShowing) {
-                    bind.searchView.hide()
-                } else {
-                    isEnabled = false
-                    onBackPressedDispatcher.onBackPressed()
-                }
+        onBackPressedDispatcher.addCallback(this@MainActivity) {
+            if (bind.searchView.isShowing) {
+                bind.searchView.hide()
+            } else {
+                finish()
             }
         }
-
-        onBackPressedDispatcher.addCallback(this@MainActivity, onBackPressedCallback)
 
         with(bind) {
             searchView.setupWithSearchBar(searchBar)
